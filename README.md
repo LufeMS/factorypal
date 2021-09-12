@@ -14,21 +14,17 @@ We would like to have a restful API to calculate machine data in real time. The 
 
 - Load machine data from provided CSV file and store it into a datastore. The format of one machine data entry is as follows:
 
-Request body:
+> Request body:
 { "key": "embosser", "name": "Embosser" }
-
----
 
 - Provide an endpoint that inserts machine parameters data into the datastore with the following format:
 
-Request body:
+> Request body:
 {  "machineKey": "embosser", "parameters": {"core_diameter": 3, "speed": 20 }}
-
----
 
 - Provide an endpoint that exposes the latest parameters for every machine.
 
-- Provide an endpoint that exposes the average, median, min and max of each parameters for the past N minutes for every machine.
+- Provide an endpoint that exposes the average, median, min and max of each parameter for the past N minutes for every machine.
 
 ## Requirements
 
