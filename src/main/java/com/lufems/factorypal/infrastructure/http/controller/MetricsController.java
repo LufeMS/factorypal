@@ -1,7 +1,6 @@
 package com.lufems.factorypal.infrastructure.http.controller;
 
-import com.lufems.factorypal.domain.model.Machine;
-import com.lufems.factorypal.infrastructure.http.controller.model.MachineMetricRest;
+import com.lufems.factorypal.infrastructure.http.controller.model.MachinesReport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MetricsController {
 
     @GetMapping("/{minutes}")
-    public ResponseEntity<MachineMetricRest> getMetrics(@PathVariable("minutes") Integer minutes) {
-        return ResponseEntity.ok(new MachineMetricRest());
+    public ResponseEntity<MachinesReport> getMetrics(@PathVariable("minutes") Integer minutes) {
+        return ResponseEntity.ok(new MachinesReport());
     }
 }

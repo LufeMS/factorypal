@@ -1,10 +1,12 @@
 package com.lufems.factorypal.domain.service;
 
 import com.lufems.factorypal.domain.model.Machine;
+import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.repository.MachineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -18,7 +20,7 @@ public class MachineService {
     }
 
     public List<Machine> listAllMachines() {
-        return this.repository.findLatestParams();
+        return this.repository.findAll();
     }
 
     public Machine findMachine(String key) {
@@ -32,5 +34,13 @@ public class MachineService {
     public void saveAll(Iterable<Machine> machines) {
         this.repository.saveAll(machines);
     }
+
+    public void findLatestParams() {
+        List<Machine> machines = this.listAllMachines();
+//        List<Machine> filteredMachines = machines.stream()
+//                .map(machine -> machine.getParameters().stream()
+//                        .sorted(Comparator.comparing(Parameter::getInsertionDate).reversed())
+//                        .distinct().collect())
+    };
 
 }

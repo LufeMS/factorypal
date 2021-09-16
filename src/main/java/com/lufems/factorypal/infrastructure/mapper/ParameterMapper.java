@@ -4,7 +4,7 @@ import com.lufems.factorypal.domain.model.Machine;
 import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.repository.MachineRepository;
 import com.lufems.factorypal.infrastructure.file.csv.model.MachineParameterCSV;
-import com.lufems.factorypal.infrastructure.http.controller.model.NewParametersRequest;
+import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewParametersRequest;
 import com.lufems.factorypal.infrastructure.http.controller.model.ParameterRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

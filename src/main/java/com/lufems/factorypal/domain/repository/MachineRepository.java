@@ -11,7 +11,4 @@ import java.util.List;
 public interface MachineRepository extends JpaRepository<Machine, Long> {
 
     Machine findByKey(String key);
-
-    @Query("SELECT distinct M FROM Machine M JOIN Parameter P on M.id = P.id")
-    List<Machine> findLatestParams();
 }

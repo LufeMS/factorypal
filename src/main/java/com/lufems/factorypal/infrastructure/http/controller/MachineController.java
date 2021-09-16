@@ -1,15 +1,16 @@
 package com.lufems.factorypal.infrastructure.http.controller;
 
+import com.lufems.factorypal.domain.model.Machine;
 import com.lufems.factorypal.domain.service.MachineService;
 import com.lufems.factorypal.infrastructure.http.controller.model.MachineRest;
+import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewMachineRequest;
 import com.lufems.factorypal.infrastructure.mapper.MachineMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,21 @@ public class MachineController {
     public ResponseEntity<MachineRest> findMachine(@PathVariable(name = "machineKey") String key) {
         MachineRest response = mapper.domainToRest(service.findMachine(key));
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<MachineRest> addMachine(@RequestBody NewMachineRequest request) {
+        Machine newMachine = mapper.newMachineRequestToDomain(request);
+        service.save(newMachine);
+
+        String baseUrl = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .build()
+                .toUriString();
+
+        String path = "/machines/" + newMachine.getKey();
+
+        return ResponseEntity.created(URI.create(baseUrl + path)).build();
     }
 
 }

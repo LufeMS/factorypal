@@ -1,7 +1,8 @@
 package com.lufems.factorypal.infrastructure.http.controller;
 
+import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.service.ParameterService;
-import com.lufems.factorypal.infrastructure.http.controller.model.NewParametersRequest;
+import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewParametersRequest;
 import com.lufems.factorypal.infrastructure.mapper.ParameterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/parameters")
@@ -29,13 +31,16 @@ public class ParameterController {
 
     @PostMapping("")
     public ResponseEntity<URI> addParameters(@RequestBody NewParametersRequest newParams) throws URISyntaxException {
-        var params = this.mapper.requestToDomain(newParams);
+
+        List<Parameter> params = this.mapper.requestToDomain(newParams);
+
         this.service.saveAll(params);
 
         final String path = "/machines/" + newParams.getMachineKey();
-
-        final String baseUrl =
-                ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        final String baseUrl = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .build()
+                .toUriString();
 
         return ResponseEntity.created(URI.create(baseUrl + path)).build();
     }

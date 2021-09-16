@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MachineMetricRest {
+public class MachinesReport {
     private String machine;
     private Date timeSelected;
     private List<ParameterMetrics> metrics;
