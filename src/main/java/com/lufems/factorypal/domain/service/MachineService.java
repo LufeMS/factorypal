@@ -35,12 +35,4 @@ public class MachineService {
         this.repository.saveAll(machines);
     }
 
-    public void findLatestParams() {
-        List<Machine> machines = this.listAllMachines();
-//        List<Machine> filteredMachines = machines.stream()
-//                .map(machine -> machine.getParameters().stream()
-//                        .sorted(Comparator.comparing(Parameter::getInsertionDate).reversed())
-//                        .distinct().collect())
-    };
-
 }
