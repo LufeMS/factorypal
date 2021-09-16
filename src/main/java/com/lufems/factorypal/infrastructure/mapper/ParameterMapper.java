@@ -48,6 +48,7 @@ public class ParameterMapper {
 
     public List<Parameter> requestToDomain(NewParametersRequest newParams) {
         List<Parameter> params = new ArrayList<>();
+
         Machine machine = machineRepository.findByKey(newParams.getMachineKey());
 
         newParams.getParameters().forEach((k, v) -> {
