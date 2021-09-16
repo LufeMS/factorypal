@@ -36,11 +36,23 @@ public class MachineController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<MachineRest>> listAllMachines() {
-        List<MachineRest> response = machineService.listAllMachines()
-                 .stream()
+    public ResponseEntity<List<MachineRest>> listAllMachinesWithLatestParams() {
+        final List<Parameter> latestParameters = parameterService.findLatestParameters();
+
+        final List<MachineRest> response = machineService.listAllMachines()
+                .stream()
+                .map(
+                        machine -> {
+                            machine.setParameters(latestParameters
+                                    .stream()
+                                    .filter(param -> param.getMachine().equals(machine))
+                                    .collect(Collectors.toSet()));
+                            return machine;
+                        }
+                )
                 .map(this.machineMapper::domainToRest)
                 .collect(Collectors.toList());
+
 
         return ResponseEntity.ok(response);
     }

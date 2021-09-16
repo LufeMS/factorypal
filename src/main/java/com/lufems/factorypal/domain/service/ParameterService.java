@@ -21,7 +21,7 @@ public class ParameterService {
         this.repository.saveAll(parameters);
     }
 
-    public void findLatestParameters() {
-        List<Parameter> parameters = this.repository.findLastestParameters();
+    public List<Parameter> findLatestParameters() {
+         return this.repository.findLastestParameters();
     }
 }
