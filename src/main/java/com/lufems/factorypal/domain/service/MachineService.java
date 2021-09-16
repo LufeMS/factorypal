@@ -18,7 +18,7 @@ public class MachineService {
     }
 
     public List<Machine> listAllMachines() {
-        return this.repository.findAll();
+        return this.repository.findLatestParams();
     }
 
     public Machine findMachine(String key) {

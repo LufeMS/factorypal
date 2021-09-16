@@ -1,8 +1,9 @@
 package com.lufems.factorypal.infrastructure.file.csv;
 
-import com.lufems.factorypal.domain.model.Machine;
-import com.lufems.factorypal.domain.model.MachineParameter;
-import com.lufems.factorypal.domain.service.MachineParameterService;
+import com.lufems.factorypal.domain.model.Parameter;
+import com.lufems.factorypal.domain.service.ParameterService;
+import com.lufems.factorypal.infrastructure.file.csv.model.MachineParameterCSV;
+import com.lufems.factorypal.infrastructure.mapper.ParameterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -17,27 +18,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MachineParameterCSVLoader {
+public class ParameterCSVLoader {
 
-    MachineParameterService service;
+    ParameterService service;
+
+    ParameterMapper mapper;
 
     @Value("classpath:${parameters.csv.path}")
     Resource resource;
 
     @Autowired
-    MachineParameterCSVLoader(MachineParameterService service) {
+    ParameterCSVLoader(ParameterService service, ParameterMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public void loadData() throws IOException {
         InputStream file = this.resource.getInputStream();
-        List<MachineParameter> parameterList = getParametersFromFile(file);
+        List<Parameter> parameterList = getParametersFromFile(file);
         this.service.saveAll(parameterList);
     }
 
-    private List<MachineParameter> getParametersFromFile(InputStream is) {
+    private List<Parameter> getParametersFromFile(InputStream is) {
 
-        List<MachineParameter> parameters = new ArrayList<>();
+        List<Parameter> parameters = new ArrayList<>();
 
         try (InputStreamReader streamReader =
                      new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -47,10 +51,10 @@ public class MachineParameterCSVLoader {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                parameters.add(CSVToParameterMapper(line));
+                parameters.add(mapper.csvToDomain(toParameterCSV(line)));
             }
 
-        } catch (IOException e) {
+        } catch (IOException e) { 
             e.printStackTrace();
         }
 
@@ -58,8 +62,12 @@ public class MachineParameterCSVLoader {
 
     }
 
-    private MachineParameter CSVToParameterMapper(String csvEntry) {
+    private MachineParameterCSV toParameterCSV(String csvEntry) {
         String[] parameterData = csvEntry.split(",");
-        return new MachineParameter();
+        MachineParameterCSV mParam = new MachineParameterCSV();
+        mParam.setKey(parameterData[0]);
+        mParam.setValue(Double.parseDouble(parameterData[1]));
+        mParam.setMachineKey(parameterData[2]);
+        return mParam;
     }
 }
