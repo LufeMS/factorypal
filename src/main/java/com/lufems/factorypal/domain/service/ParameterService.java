@@ -5,6 +5,8 @@ import com.lufems.factorypal.domain.repository.ParameterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ParameterService {
 
@@ -17,5 +19,9 @@ public class ParameterService {
 
     public void saveAll(Iterable<Parameter> parameters) {
         this.repository.saveAll(parameters);
+    }
+
+    public void findLatestParameters() {
+        List<Parameter> parameters = this.repository.findLastestParameters();
     }
 }

@@ -3,7 +3,7 @@ package com.lufems.factorypal.infrastructure.mapper;
 import com.lufems.factorypal.domain.model.Machine;
 import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.repository.MachineRepository;
-import com.lufems.factorypal.infrastructure.file.csv.model.MachineParameterCSV;
+import com.lufems.factorypal.infrastructure.file.csv.model.ParameterCSV;
 import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewParametersRequest;
 import com.lufems.factorypal.infrastructure.http.controller.model.ParameterRest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ParameterMapper {
         this.machineRepository = machineRepository;
     }
 
-    public Parameter csvToDomain(MachineParameterCSV aParam) {
+    public Parameter csvToDomain(ParameterCSV aParam) {
         Parameter mParam = new Parameter();
 
         mParam.setKey(aParam.getKey());

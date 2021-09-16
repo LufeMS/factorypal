@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MachineParameterCSV {
+public class ParameterCSV {
     private String key;
     private Double value;
     private String machineKey;

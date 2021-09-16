@@ -2,7 +2,7 @@ package com.lufems.factorypal.infrastructure.file.csv;
 
 import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.service.ParameterService;
-import com.lufems.factorypal.infrastructure.file.csv.model.MachineParameterCSV;
+import com.lufems.factorypal.infrastructure.file.csv.model.ParameterCSV;
 import com.lufems.factorypal.infrastructure.mapper.ParameterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,9 +62,9 @@ public class ParameterCSVLoader {
 
     }
 
-    private MachineParameterCSV toParameterCSV(String csvEntry) {
+    private ParameterCSV toParameterCSV(String csvEntry) {
         String[] parameterData = csvEntry.split(",");
-        MachineParameterCSV mParam = new MachineParameterCSV();
+        ParameterCSV mParam = new ParameterCSV();
         mParam.setKey(parameterData[0]);
         mParam.setValue(Double.parseDouble(parameterData[1]));
         mParam.setMachineKey(parameterData[2]);
