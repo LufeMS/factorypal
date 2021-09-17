@@ -29,8 +29,14 @@ public class Parameter {
     @JoinColumn(name = "machine_id", nullable = false)
     private Machine machine;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, machine);
+    public Parameter(Long id, String key, Double value, LocalDateTime insertionDate, Machine machine) {
+        this.id = id;
+        this.key = key;
+        this.value = value;
+        this.insertionDate = insertionDate;
+        this.machine = machine;
+    }
+
+    public Parameter() {
     }
 }

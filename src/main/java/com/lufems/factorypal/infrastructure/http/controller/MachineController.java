@@ -9,6 +9,7 @@ import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewMac
 import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewParametersRequest;
 import com.lufems.factorypal.infrastructure.mapper.MachineMapper;
 import com.lufems.factorypal.infrastructure.mapper.ParameterMapper;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,30 +38,52 @@ public class MachineController {
 
     @GetMapping("")
     public ResponseEntity<List<MachineRest>> listAllMachinesWithLatestParams() {
-        final List<Parameter> latestParameters = parameterService.findLatestParameters();
+        try {
+            final List<Parameter> latestParameters = parameterService.findLatestParameters();
 
-        final List<MachineRest> response = machineService.listAllMachines()
-                .stream()
-                .map(
-                        machine -> {
-                            machine.setParameters(latestParameters
-                                    .stream()
-                                    .filter(param -> param.getMachine().equals(machine))
-                                    .collect(Collectors.toSet()));
-                            return machine;
-                        }
-                )
-                .map(this.machineMapper::domainToRest)
-                .collect(Collectors.toList());
+            if (latestParameters.isEmpty()) throw new NotFoundException("No parameters were found");
+
+            final List<Machine> machines = machineService.listAllMachines();
+
+            if (machines.isEmpty()) throw new NotFoundException("No machines were found");
+
+            final List<MachineRest> response = machines.stream()
+                    .map(
+                            machine -> {
+                                machine.setParameters(latestParameters
+                                        .stream()
+                                        .filter(param -> param.getMachine().equals(machine))
+                                        .collect(Collectors.toSet()));
+                                return machine;
+                            }
+                    )
+                    .map(this.machineMapper::domainToRest)
+                    .collect(Collectors.toList());
 
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+        } catch (NotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/{machineKey}")
     public ResponseEntity<MachineRest> findMachine(@PathVariable(name = "machineKey") String key) {
-        MachineRest response = machineMapper.domainToRest(machineService.findMachine(key));
-        return ResponseEntity.ok(response);
+        try {
+            Machine machine = machineService.findMachine(key);
+
+            if (machine == null) throw new NotFoundException("No machine found");
+
+            MachineRest response = machineMapper.domainToRest(machine);
+
+            return ResponseEntity.ok(response);
+        } catch (NotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("")
