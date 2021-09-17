@@ -25,12 +25,13 @@ public class ParameterMapper {
     }
 
     public Parameter csvToDomain(ParameterCSV aParam) {
+        Machine machine = machineRepository.findByKey(aParam.getMachineKey());
+        if(machine == null) return null;
+
         Parameter mParam = new Parameter();
 
         mParam.setKey(aParam.getKey());
         mParam.setValue(aParam.getValue());
-
-        Machine machine = machineRepository.findByKey(aParam.getMachineKey());
 
         mParam.setMachine(machine);
         mParam.setInsertionDate(LocalDateTime.now());

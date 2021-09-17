@@ -36,7 +36,10 @@ public class ParameterCSVLoader {
     public void loadData() throws IOException {
         InputStream file = this.resource.getInputStream();
         List<Parameter> parameterList = getParametersFromFile(file);
-        this.service.saveAll(parameterList);
+
+        if(!parameterList.isEmpty()) {
+            this.service.saveAll(parameterList);
+        }
     }
 
     private List<Parameter> getParametersFromFile(InputStream is) {
@@ -51,7 +54,11 @@ public class ParameterCSVLoader {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                parameters.add(mapper.csvToDomain(toParameterCSV(line)));
+                final Parameter parameter = mapper.csvToDomain(toParameterCSV(line));
+
+                if(parameter == null) continue;
+
+                parameters.add(parameter);
             }
 
         } catch (IOException e) { 
