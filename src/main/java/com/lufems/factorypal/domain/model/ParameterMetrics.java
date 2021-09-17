@@ -5,11 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Metrics {
+public class ParameterMetrics {
+    private String name;
     private Double average;
-    private Double minimun;
-    private Double maximum;
     private Double median;
-    private Parameter param;
-    private Machine machine;
+    private Double minimum;
+    private Double maximum;
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,19 +23,11 @@ public class Parameter {
 
     private String key;
     private Double value;
-    private Date insertionDate;
+    private LocalDateTime insertionDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "machine_id", nullable = false)
     private Machine machine;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Parameter parameter = (Parameter) o;
-        return key.equals(parameter.key) && machine.equals(parameter.machine);
-    }
 
     @Override
     public int hashCode() {

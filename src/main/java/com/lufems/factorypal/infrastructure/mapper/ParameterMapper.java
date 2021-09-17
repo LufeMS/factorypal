@@ -4,13 +4,14 @@ import com.lufems.factorypal.domain.model.Machine;
 import com.lufems.factorypal.domain.model.Parameter;
 import com.lufems.factorypal.domain.repository.MachineRepository;
 import com.lufems.factorypal.infrastructure.file.csv.model.ParameterCSV;
+import com.lufems.factorypal.domain.model.Summary;
 import com.lufems.factorypal.infrastructure.http.controller.model.Request.NewParametersRequest;
 import com.lufems.factorypal.infrastructure.http.controller.model.ParameterRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -32,7 +33,7 @@ public class ParameterMapper {
         Machine machine = machineRepository.findByKey(aParam.getMachineKey());
 
         mParam.setMachine(machine);
-        mParam.setInsertionDate(new Date());
+        mParam.setInsertionDate(LocalDateTime.now());
 
         return mParam;
     }
@@ -57,7 +58,7 @@ public class ParameterMapper {
             p.setKey(k);
             p.setValue(v);
             p.setMachine(machine);
-            p.setInsertionDate(new Date());
+            p.setInsertionDate(LocalDateTime.now());
 
             params.add(p);
         });
